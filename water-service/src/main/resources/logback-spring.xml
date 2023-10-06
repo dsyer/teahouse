@@ -21,11 +21,11 @@
 
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
         <http>
-            <url>http://localhost:3100/loki/api/v1/push</url>
+            <url>http://${loki.hostname:localhost}:3100/loki/api/v1/push</url>
         </http>
         <format>
             <label>
-                <pattern>org=${orgName},application=${appName},host=${HOSTNAME},level=%level</pattern>
+                <pattern>org=${orgName},application=${appName},host=${eureka.instance.hostname:${HOSTNAME}},level=%level</pattern>
             </label>
             <message>
                 <pattern>${FILE_LOG_PATTERN}</pattern>
