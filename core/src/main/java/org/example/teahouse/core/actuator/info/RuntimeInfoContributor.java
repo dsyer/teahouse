@@ -92,9 +92,9 @@ public class RuntimeInfoContributor implements InfoContributor {
 
     private Map<String, Object> userInfo() {
         return ImmutableMap.<String, Object>builder()
-            .put("timezone", System.getProperty("user.timezone"))
-            .put("country", System.getProperty("user.country"))
-            .put("language", System.getProperty("user.language"))
+            .put("timezone", System.getProperty("user.timezone", "UTC"))
+            .put("country", System.getProperty("user.country", "US"))
+            .put("language", System.getProperty("user.language", "en"))
             .put("dir", System.getProperty("user.dir"))
             .build();
     }
