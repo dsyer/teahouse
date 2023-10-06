@@ -22,6 +22,17 @@ spec:
       labels:
         io.kompose.service: tempo
     spec:
+      initContainers:
+        - command:
+            - sh
+            - -c
+            - |
+              git clone --branch tap https://github.com/dsyer/teahouse.git /tmp/etc/config
+          image: bitnami/git
+          name: init
+          volumeMounts:
+            - mountPath: /tmp/etc
+              name: config
       containers:
         - args:
             - -config.file=/etc/tempo/tempo.yml
@@ -41,12 +52,10 @@ spec:
             - mountPath: /tmp/tempo
               name: tempo
             - mountPath: /etc/tempo
-              subPath: docker/grafana
-              name: tempo-claim
+              subPath: config/docker/grafana
+              name: config
               readOnly: true
       restartPolicy: Always
       volumes:
         - name: tempo
-        - name: tempo-claim
-          persistentVolumeClaim:
-            claimName: nfs
+        - name: config

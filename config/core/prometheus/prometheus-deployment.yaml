@@ -23,6 +23,17 @@ spec:
       labels:
         io.kompose.service: prometheus
     spec:
+      initContainers:
+        - command:
+            - sh
+            - -c
+            - |
+              git clone --branch tap https://github.com/dsyer/teahouse.git /tmp/etc/config
+          image: bitnami/git
+          name: init
+          volumeMounts:
+            - mountPath: /tmp/etc
+              name: config
       containers:
         - args:
             - --enable-feature=exemplar-storage
@@ -43,12 +54,10 @@ spec:
             - mountPath: /prometheus
               name: prometheus
             - mountPath: /etc/prometheus
-              subPath: docker/prometheus
-              name: prometheus-claim
+              subPath: config/docker/prometheus
+              name: config
               readOnly: true
       restartPolicy: Always
       volumes:
         - name: prometheus
-        - name: prometheus-claim
-          persistentVolumeClaim:
-            claimName: nfs
+        - name: config

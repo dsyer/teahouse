@@ -23,6 +23,17 @@ spec:
       labels:
         io.kompose.service: grafana
     spec:
+      initContainers:
+        - command:
+            - sh
+            - -c
+            - |
+              git clone --branch tap https://github.com/dsyer/teahouse.git /tmp/etc/config
+          image: bitnami/git
+          name: init
+          volumeMounts:
+            - mountPath: /tmp/etc
+              name: config
       containers:
         - env:
             - name: GF_AUTH_ANONYMOUS_ENABLED
@@ -44,11 +55,9 @@ spec:
               memory: 100Mi
           volumeMounts:
             - mountPath: /etc/grafana
-              subPath: docker/grafana
-              name: grafana-claim
+              subPath: config/docker/grafana
+              name: config
               readOnly: true
       restartPolicy: Always
       volumes:
-        - name: grafana-claim
-          persistentVolumeClaim:
-            claimName: nfs
+        - name: config
