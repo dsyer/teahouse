@@ -12,7 +12,7 @@ spec:
     value: '{"eureka.client.serviceUrl.defaultZone":"http://eureka:8761/eureka/", "eureka.instance.hostname=":"water-service", "management.zipkin.tracing.endpoint":"http://tempo:9411/api/v2/spans", "loki.hostname":"loki"}'
   resources:
     limits:
-      cpu: 2000m
+      cpu: 1500m
       memory: 1Gi
     requests:
       cpu: 100m
