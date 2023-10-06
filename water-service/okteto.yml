@@ -1,0 +1,11 @@
+dev:
+  water-service:
+    image: okteto/maven:3
+    command: bash
+    container: workload
+    volumes:
+    - /root/.gradle
+    sync:
+    - .:/usr/src/app
+    forward:
+    - 8091:8080

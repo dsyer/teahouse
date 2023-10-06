@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o config
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: toxiproxy
+  name: toxiproxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: toxiproxy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o config
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: toxiproxy
+    spec:
+      containers:
+        - args:
+            - -host=0.0.0.0
+            - -config
+            - /config/toxiproxy.json
+            - -proxy-metrics
+            - -runtime-metrics
+          image: ghcr.io/shopify/toxiproxy
+          name: toxiproxy
+          ports:
+            - containerPort: 8474
+            - containerPort: 3307
+            - containerPort: 3308
+          resources:
+            limits:
+              cpu: 300m
+              memory: 1Gi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - mountPath: /config
+              name: toxiproxy-claim0
+      restartPolicy: Always
+      volumes:
+        - name: toxiproxy-claim0
+          persistentVolumeClaim:
+            claimName: toxiproxy-claim0
+status: {}

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o config
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: toxiproxy-ui
+  name: toxiproxy-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: toxiproxy-ui
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o config
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: toxiproxy-ui
+    spec:
+      containers:
+        - env:
+            - name: TOXIPROXY_URL
+              value: http://toxiproxy:8474
+          image: buckle/toxiproxy-frontend
+          name: toxiproxy-ui
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 200m
+              memory: 1Gi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      restartPolicy: Always
+status: {}

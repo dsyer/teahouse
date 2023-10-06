@@ -1,0 +1,19 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: water-service
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: teahouse
+spec:
+  image: dsyer/water-service
+  env:
+  - name: SPRING_APPLICATION_JSON
+    value: '{"eureka.client.serviceUrl.defaultZone":"http://eureka:8761/eureka/", "eureka.instance.hostname=":"water-service", "management.zipkin.tracing.endpoint":"http://tempo:9411/api/v2/spans", "loki.hostname":"loki"}'
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 100Mi

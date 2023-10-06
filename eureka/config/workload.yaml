@@ -1,0 +1,25 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: eureka
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: teahouse
+spec:
+  image: dsyer/eureka
+  env:
+  - name: SPRING_APPLICATION_JSON
+    value: '{"eureka.client.serviceUrl.defaultZone":"http://localhost:8080/eureka/", "eureka.instance.hostname=":"eureka"}'
+  params:
+  - name: ports
+    value:
+    - port: 8761
+      containerPort: 8080
+      name: http
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 100Mi
