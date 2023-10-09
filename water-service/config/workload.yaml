@@ -9,7 +9,7 @@ spec:
   image: dsyer/water-service
   env:
   - name: SPRING_APPLICATION_JSON
-    value: '{"eureka.client.serviceUrl.defaultZone":"http://eureka:8761/eureka/", "eureka.instance.hostname=":"water-service", "management.zipkin.tracing.endpoint":"http://tempo:9411/api/v2/spans", "loki.hostname":"loki"}'
+    value: '{"management.zipkin.tracing.endpoint":"http://tempo:9411/api/v2/spans", "loki.hostname":"loki"}'
   resources:
     limits:
       cpu: 1500m
@@ -17,3 +17,12 @@ spec:
     requests:
       cpu: 100m
       memory: 100Mi
+  params:
+  - name: annotations
+    value:
+    - key: prometheus.io/scrape
+      value: "true"
+    - key: prometheus.io/port
+      value: "8080"
+    - key: prometheus.io/path
+      value: "/actuator/prometheus"
