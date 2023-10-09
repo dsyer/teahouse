@@ -20,9 +20,6 @@ spec:
   params:
   - name: annotations
     value:
-    - key: prometheus.io/scrape
-      value: "true"
-    - key: prometheus.io/port
-      value: "8080"
-    - key: prometheus.io/path
-      value: "/actuator/prometheus"
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8080"
+      prometheus.io/path: "/actuator/prometheus"
