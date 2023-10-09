@@ -5,6 +5,7 @@
     <property scope="local" name="payloadFileName" value="${spring.application.home:-.}/logs/water-service.payload.log" />
     <springProperty scope="context" name="appName" source="spring.application.name" />
     <springProperty scope="context" name="orgName" source="spring.application.org" />
+    <springProperty scope="context" name="lokiHostname" source="loki.hostname" defaultValue="localhost"/>
 
     <appender name="PAYLOAD_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
@@ -21,7 +22,7 @@
 
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
         <http>
-            <url>http://${loki.hostname:localhost}:3100/loki/api/v1/push</url>
+            <url>http://${lokiHostname}:3100/loki/api/v1/push</url>
         </http>
         <format>
             <label>
