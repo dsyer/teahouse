@@ -14,7 +14,6 @@ dependencies {
     implementation 'io.github.openfeign:feign-okhttp'
     implementation 'io.github.openfeign:feign-micrometer'
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
 
