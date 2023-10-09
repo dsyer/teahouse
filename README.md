@@ -2,44 +2,36 @@
 
 ![build badge](https://github.com/jonatan-ivanov/teahouse/actions/workflows/gradle.yml/badge.svg)
 
-Demo setup for Spring Boot apps with Prometheus, Grafana, Loki, Tempo, Eureka, and Spring Boot Admin to demonstrate Observability use-cases.
+Demo setup for Spring Boot apps with Prometheus, Grafana, Loki, Tempo, and Spring Boot Admin to demonstrate Observability use-cases.
+
+## Start Kubernetes Tunnel
+
+If you want to test the services locally you can use Telepresence (or similar tools) to expose the services to your local machine. You need to have Telepresence installed and running on your machine. You can start the tunnel with this command:
+
+```shell
+telepresence connect
+```
+
+URLs in the rest of this guide assume that you are deploying into a Kubernetes namespace called `apps`.
 
 ## Start dependencies
 
 ```shell
-docker compose up
+for f in config/core/*; do kubectl apply -f $f; done
 ```
 
 ## Stop dependencies
 
 ```shell
-docker compose down
-```
-
-## Stop dependencies and purge data
-
-```shell
-docker compose down --volumes
-```
-
-## Remove logs
-
-```shell
-rm -rf logs
+for f in config/core/*; do kubectl delete -f $f; done
 ```
 
 ## Start the apps (using in-memory H2 DB)
 
 ```shell
-./gradlew bootRun
-```
-
-## Start the apps using MySQL
-
-This is needed if you want to inject latency on the network (see [ToxiProxy](#useful-urls)).
-
-```shell
-./gradlew bootRun -Pprofiles=mysql
+kubectl apply -f water-service/config
+kubectl apply -f tealeaf-service/config
+kubectl apply -f tea-service/config
 ```
 
 ## Start load tests
@@ -52,17 +44,12 @@ See `SteepTeaSimulation.java` for duration, request rate, and traffic patterns.
 
 ## Useful URLs
 
-- Tea UI: http://localhost:8090/steep
-- Tea Service: http://localhost:8090
-- Tealeaf Service: http://localhost:8091
-- Water Service: http://localhost:8092
-- Spring Boot Admin: http://localhost:8080
-- Eureka: http://localhost:8761
-- Prometheus: http://localhost:9090
-- Loki, Grafana, Tempo: http://localhost:3000
-- ToxiProxy UI (failure injection): http://localhost:8484
-- MailDev (emails for alerts): http://localhost:3001
-- Adminer (DB Admin UI): http://localhost:8888 (credentials: `root:password`)
+- Tea UI: http://tea-service.apps:8080/steep
+- Tea Service: http://tea-service.apps:8080
+- Tealeaf Service: http://tealeaf-service.apps:8080
+- Water Service: http://water-service.apps:8080
+- Prometheus: http://prometheus.apps:9090
+- Loki, Grafana, Tempo: http://grafana.apps:3200
 
 ## Errors simulation
 
