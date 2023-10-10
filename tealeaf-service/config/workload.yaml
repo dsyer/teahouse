@@ -9,7 +9,7 @@ spec:
   image: dsyer/tealeaf-service
   env:
   - name: SPRING_APPLICATION_JSON
-    value: '{"management.zipkin.tracing.endpoint":"http://tempo:9411/api/v2/spans", "loki.hostname":"loki"}'
+    value: '{"management.zipkin.tracing.endpoint":"http://tempo:9411/api/v2/spans", "loki.hostname":"loki", "spring.profiles.active": "loki"}'
   resources:
     limits:
       cpu: 1500m
