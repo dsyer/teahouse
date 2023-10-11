@@ -69,14 +69,12 @@ spec:
         - name: config
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: prometheus
 rules:
 - apiGroups: [""]
   resources:
-  - nodes
-  - nodes/proxy
   - services
   - endpoints
   - pods
@@ -86,18 +84,15 @@ rules:
   resources:
   - ingresses
   verbs: ["get", "list", "watch"]
-- nonResourceURLs: ["/metrics"]
-  verbs: ["get"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: prometheus
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: prometheus
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: apps
