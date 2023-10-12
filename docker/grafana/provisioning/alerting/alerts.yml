@@ -202,7 +202,7 @@ contactPoints:
         type: webhook
         disableResolveMessage: false
         settings:
-            url: 'https://eoytpxseg9tkxh5.m.pipedream.net'
+            url: 'http://webhook:3333/'
 policies:
   - orgId: 1
     receiver: alerts-email-and-local-webhook

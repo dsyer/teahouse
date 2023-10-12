@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: webhook
+  name: webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: webhook
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: webhook
+    spec:
+      containers:
+        - image: jmalloc/echo-server
+          name: webhook
+          env:
+          - name: LOG_HTTP_BODY
+            value: "true"
+          - name: LOG_HTTP_HEADERS
+            value: "true"
+          resources:
+            limits:
+              cpu: 300m
+              memory: 1Gi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook
+spec:
+  ports:
+    - name: "3333"
+      port: 3333
+      targetPort: 8080
+  selector:
+    io.kompose.service: webhook
+status:
+  loadBalancer: {}
