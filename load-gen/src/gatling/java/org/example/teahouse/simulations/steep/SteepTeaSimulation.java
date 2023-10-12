@@ -18,7 +18,7 @@ public class SteepTeaSimulation extends Simulation {
     final Duration duration = Duration.ofMinutes(30);
     final int usersPerSec = 5;
 
-    final HttpProtocolBuilder httpProtocol = http.baseUrl("http://tea-service.apps:8080")
+    final HttpProtocolBuilder httpProtocol = http.baseUrl("http://localhost:8090")
         .contentTypeHeader(ApplicationJson())
         .acceptHeader(ApplicationJson());
 

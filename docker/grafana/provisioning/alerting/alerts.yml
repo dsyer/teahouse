@@ -202,7 +202,7 @@ contactPoints:
         type: webhook
         disableResolveMessage: false
         settings:
-            url: 'http://host.docker.internal:3333'
+            url: 'http://webhook:3333'
 policies:
   - orgId: 1
     receiver: alerts-email-and-local-webhook

@@ -22,24 +22,6 @@ spec:
       labels:
         io.kompose.service: prometheus
     spec:
-      initContainers:
-        - command:
-            - sh
-            - -c
-            - |
-              git clone --branch tap https://github.com/dsyer/teahouse.git /tmp/etc/config
-          image: bitnami/git
-          name: init
-          resources:
-            limits:
-              cpu: 100m
-              memory: 1Gi
-            requests:
-              cpu: 100m
-              memory: 100Mi
-          volumeMounts:
-            - mountPath: /tmp/etc
-              name: config
       containers:
         - args:
             - --enable-feature=exemplar-storage
@@ -57,16 +39,18 @@ spec:
               cpu: 100m
               memory: 100Mi
           volumeMounts:
-            - mountPath: /prometheus
-              name: prometheus
-            - mountPath: /etc/prometheus
-              subPath: config/docker/prometheus
-              name: config
-              readOnly: true
+            - name: prometheus-config-volume
+              mountPath: /etc/prometheus/
+            - name: prometheus-storage-volume
+              mountPath: /prometheus/
       restartPolicy: Always
       volumes:
-        - name: prometheus
-        - name: config
+        - name: prometheus-config-volume
+          configMap:
+            defaultMode: 420
+            name: prometheus-server-conf
+        - name: prometheus-storage-volume
+          emptyDir: {}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role

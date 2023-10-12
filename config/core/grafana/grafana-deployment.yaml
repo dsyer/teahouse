@@ -64,7 +64,6 @@ spec:
             - mountPath: /etc/grafana
               subPath: config/docker/grafana
               name: config
-              readOnly: true
       restartPolicy: Always
       volumes:
         - name: config

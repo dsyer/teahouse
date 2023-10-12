@@ -22,24 +22,6 @@ spec:
       labels:
         io.kompose.service: tempo
     spec:
-      initContainers:
-        - command:
-            - sh
-            - -c
-            - |
-              git clone --branch tap https://github.com/dsyer/teahouse.git /tmp/etc/config
-          image: bitnami/git
-          name: init
-          resources:
-            limits:
-              cpu: 100m
-              memory: 1Gi
-            requests:
-              cpu: 100m
-              memory: 100Mi
-          volumeMounts:
-            - mountPath: /tmp/etc
-              name: config
       containers:
         - args:
             - -config.file=/etc/tempo/tempo.yml
@@ -56,13 +38,15 @@ spec:
               cpu: 100m
               memory: 100Mi
           volumeMounts:
-            - mountPath: /tmp/tempo
-              name: tempo
-            - mountPath: /etc/tempo
-              subPath: config/docker/grafana
-              name: config
-              readOnly: true
+            - name: tempo-config-volume
+              mountPath: /etc/tempo/
+            - name: tempo-storage-volume
+              mountPath: /tmp/tempo/
       restartPolicy: Always
       volumes:
-        - name: tempo
-        - name: config
+        - name: tempo-config-volume
+          configMap:
+            defaultMode: 420
+            name: tempo-server-conf
+        - name: tempo-storage-volume
+          emptyDir: {}
