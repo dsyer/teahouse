@@ -1,0 +1,133 @@
+{
+	"id": 3,
+	"orgID": 1,
+	"folderUID": "a14678fd-81dc-48fb-8c1e-8546996ab6c9",
+	"ruleGroup": "10s",
+	"title": "Another Tea Error Rate",
+	"condition": "C",
+	"data": [
+		{
+			"refId": "A",
+			"queryType": "",
+			"relativeTimeRange": {
+				"from": 60,
+				"to": 0
+			},
+			"datasourceUid": "prometheus",
+			"model": {
+				"datasource": {
+					"type": "prometheus",
+					"uid": "prometheus"
+				},
+				"editorMode": "code",
+				"exemplar": false,
+				"expr": "rate(http_server_requests_seconds_count{outcome!=\"SUCCESS\", application=\"tea-service\", uri=\"/tea/{name}\"}[$__rate_interval])",
+				"hide": false,
+				"instant": false,
+				"intervalMs": 1000,
+				"maxDataPoints": 43200,
+				"range": true,
+				"refId": "A"
+			}
+		},
+		{
+			"refId": "B",
+			"queryType": "",
+			"relativeTimeRange": {
+				"from": 60,
+				"to": 0
+			},
+			"datasourceUid": "__expr__",
+			"model": {
+				"conditions": [
+					{
+						"evaluator": {
+							"params": [],
+							"type": "gt"
+						},
+						"operator": {
+							"type": "and"
+						},
+						"query": {
+							"params": [
+								"B"
+							]
+						},
+						"reducer": {
+							"params": [],
+							"type": "last"
+						},
+						"type": "query"
+					}
+				],
+				"datasource": {
+					"type": "__expr__",
+					"uid": "__expr__"
+				},
+				"expression": "A",
+				"hide": false,
+				"intervalMs": 1000,
+				"maxDataPoints": 43200,
+				"reducer": "last",
+				"refId": "B",
+				"settings": {
+					"mode": "dropNN"
+				},
+				"type": "reduce"
+			}
+		},
+		{
+			"refId": "C",
+			"queryType": "",
+			"relativeTimeRange": {
+				"from": 60,
+				"to": 0
+			},
+			"datasourceUid": "__expr__",
+			"model": {
+				"conditions": [
+					{
+						"evaluator": {
+							"params": [
+								0.1
+							],
+							"type": "gt"
+						},
+						"operator": {
+							"type": "and"
+						},
+						"query": {
+							"params": [
+								"C"
+							]
+						},
+						"reducer": {
+							"params": [],
+							"type": "last"
+						},
+						"type": "query"
+					}
+				],
+				"datasource": {
+					"type": "__expr__",
+					"uid": "__expr__"
+				},
+				"expression": "B",
+				"hide": false,
+				"intervalMs": 1000,
+				"maxDataPoints": 43200,
+				"refId": "C",
+				"type": "threshold"
+			}
+		}
+	],
+	"noDataState": "OK",
+	"execErrState": "Error",
+	"for": "10s",
+	"annotations": {
+		"__dashboardUid__": "280lKAr7k",
+		"__panelId__": "4",
+		"summary": "Tea error rate is high"
+	},
+	"isPaused": false
+}
