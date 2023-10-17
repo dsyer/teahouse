@@ -16,3 +16,5 @@ include ':tea-service'
 include ':tea-service:tea-api'
 
 include ':load-gen'
+
+include ':alert-service'

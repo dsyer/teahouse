@@ -1,7 +1,8 @@
 {
 	"id": 3,
+	"uid": "b44bb7ff-24f7-41c2-afee-14503b2c928b",
 	"orgID": 1,
-	"folderUID": "a14678fd-81dc-48fb-8c1e-8546996ab6c9",
+	"folderUID": "c657e3c6-b1c9-4f4a-b0ac-afa0cf22300d",
 	"ruleGroup": "10s",
 	"title": "Another Tea Error Rate",
 	"condition": "C",

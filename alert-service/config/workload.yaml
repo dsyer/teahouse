@@ -1,0 +1,22 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: alert-service
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: teahouse
+spec:
+  image: dsyer/tea-service
+  resources:
+    limits:
+      cpu: 1500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  params:
+  - name: annotations
+    value:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8080"
+      prometheus.io/path: "/actuator/prometheus"
