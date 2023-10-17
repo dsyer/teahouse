@@ -5,10 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.metrics.buffering.BufferingApplicationStartup;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.ResponseErrorHandler;
-import org.springframework.web.client.RestTemplate;
 
 import jakarta.annotation.PostConstruct;
 
@@ -43,7 +40,7 @@ class AlertScraperService {
         if (folder==null) {
             folder = new Folder(0, "", "UNKNOWN");
         }
-        Alert alert = Alert.forFolder(folder);
+        Alert alert = Alert.forFolder(folder).application("tea-service").uri("/tea/{name}").build();
         grafana.addAlert(alert);
     }
 
