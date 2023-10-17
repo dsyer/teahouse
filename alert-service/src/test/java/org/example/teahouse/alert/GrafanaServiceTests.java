@@ -15,7 +15,7 @@ public class GrafanaServiceTests {
 		Folder folder = new Folder(1, UUID.randomUUID().toString(), "Another Tea Error Rate");
 		Alert alert = Alert.forFolder(folder);
 		assertThat(alert.getDetails().get("id")).isNotNull();
-		assertThat(alert.getDetails().get("folderUID")).isEqualTo(folder.uid());
+		assertThat(alert.getFolderUID()).isEqualTo(folder.uid());
 		String tree = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(alert);
 		assertThat(tree).contains("Another Tea Error Rate");
 		assertThat(tree).doesNotContain("\"details\" :");
