@@ -1,9 +1,24 @@
 package org.example.teahouse.tea;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = TeaServiceApplication.class)
+import java.net.URI;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
+
+@SpringBootTest(classes = TeaServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TeaServiceApplicationTest {
-    @Test void contextLoads() {}
+    @Autowired
+    private TestRestTemplate rest;
+    @LocalServerPort
+    private long port;
+    @Test void contextLoads() {
+        ResponseEntity<String> result = rest.getForEntity(URI.create("http://localhost:" + port + "/actuator/alert"), String.class);
+        assertThat(result.getBody()).contains("Tea Errors");
+    }
 }

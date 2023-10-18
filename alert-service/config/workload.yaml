@@ -4,6 +4,7 @@ metadata:
   name: alert-service
   labels:
     apps.tanzu.vmware.com/workload-type: server
+    apis.apps.tanzu.vmware.com/register-api: "true"
     app.kubernetes.io/part-of: teahouse
 spec:
   image: dsyer/tea-service

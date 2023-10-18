@@ -113,7 +113,10 @@ class Alert {
 	@JsonAnyGetter
 	private Map<String, Object> details = new LinkedHashMap<>();
 	private String folderUID;
+	private String uid;
 	private String title;
+	@JsonIgnore
+	private String application = "application";
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	static class AlertBuilder {
@@ -122,16 +125,20 @@ class Alert {
 		private String application = "application";
 		private String uri = "/";
 		private String title = "Error Rate";
+		private String message = "Service is experiencing high error rates";
 
 		public Alert build() {
 			Alert alert = new Alert();
 			try {
-				alert = mapper.readValue(TEMPLATE.replace("${application}", application).replace("${uri}", uri),
+				alert = mapper.readValue(
+						TEMPLATE.replace("${application}", application).replace("${uri}", uri).replace("${message}",
+								message),
 						Alert.class);
 			} catch (Exception e) {
 				throw new IllegalStateException(e);
 			}
 			alert.title = title;
+			alert.application = application;
 			alert.folderUID = folder.uid() == null ? "null" : folder.uid();
 			return alert;
 		}
@@ -153,6 +160,11 @@ class Alert {
 
 		public AlertBuilder title(String title) {
 			this.title = title;
+			return this;
+		}
+
+		public AlertBuilder message(String message) {
+			this.message = message;
 			return this;
 		}
 
@@ -182,6 +194,14 @@ class Alert {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 
 	private static String TEMPLATE = """
@@ -315,7 +335,7 @@ class Alert {
 				"annotations": {
 					"__dashboardUid__": "280lKAr7k",
 					"__panelId__": "4",
-					"summary": "Error rate is high"
+					"summary": "${message}"
 				},
 				"isPaused": false
 			}
@@ -323,7 +343,7 @@ class Alert {
 
 	@Override
 	public String toString() {
-		return "Alert [folderUID=" + folderUID + ", title=" + title + "]";
+		return "Alert [application=" + application + ", uri=" + title + "]";
 	}
 
 }

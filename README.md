@@ -29,9 +29,7 @@ for f in config/core/*; do kubectl delete -f $f; done
 ## Start the apps (using in-memory H2 DB)
 
 ```shell
-kubectl apply -f water-service/config
-kubectl apply -f tealeaf-service/config
-kubectl apply -f tea-service/config
+for f in water-service tealeaf-service tea-service; do kubectl apply -f $f/config; done
 ```
 
 ## Start load tests
