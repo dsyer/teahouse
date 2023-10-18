@@ -9,8 +9,8 @@ spec:
   image: dsyer/tea-service
   env:
   - name: SPRING_APPLICATION_JSON
-    value: '{"management.zipkin.tracing.endpoint":"http://tempo:9411/api/v2/spans", "loki.hostname":"loki", "spring.profiles.active": "loki"}'
-  resources:
+    value: '{"management.zipkin.tracing.endpoint":"http://tempo:9411/api/v2/spans", "loki.hostname":"loki", "spring.profiles.active": "loki", "water.url": "http://water-service:8080", "tealeaf.url": "http://tealeaf-service:8080"}'
+  resource
     limits:
       cpu: 1500m
       memory: 1Gi
