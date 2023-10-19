@@ -10,7 +10,7 @@ public class AlertActuatorServiceTests {
 	@Test
 	public void testNoAlerts() throws Exception {
 		AlertProperties props = new AlertProperties();
-		props.setUrl("http://garbage/actuator/alert");
+		props.setUrl("http://garbage/actuator/");
 		AlertActuatorService service = new AlertActuatorService(new RestTemplateBuilder(), props);
 		// No errors, no alerts
 		assertThat(service.getAlerts(new Folder(1, "uid", "title"))).hasSize(0);
@@ -19,7 +19,7 @@ public class AlertActuatorServiceTests {
 	@Test
 	public void testAlerts() throws Exception {
 		AlertProperties props = new AlertProperties();
-		props.setUrl("http://localhost:8090/actuator/alert");
+		props.setUrl("http://localhost:8090/actuator/");
 		AlertActuatorService service = new AlertActuatorService(new RestTemplateBuilder(), props);
 		// No errors, alerts
 		assertThat(service.getAlerts(new Folder(1, "uid", "title"))).hasSize(1);

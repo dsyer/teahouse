@@ -1,8 +1,12 @@
 package org.example.teahouse.tea.controller;
 
+import static org.example.teahouse.tea.dashboard.PanelType.LATENCY_GRAPH;
+import static org.example.teahouse.tea.dashboard.PanelType.LATENCY_HEATMAP;
+
 import org.example.teahouse.tea.alert.ErrorAlert;
 import org.example.teahouse.tea.alert.Severity;
 import org.example.teahouse.tea.api.TeaResponse;
+import org.example.teahouse.tea.dashboard.DashboardPanel;
 import org.example.teahouse.tea.service.TeaService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +30,8 @@ public class TeaController {
 
     @GetMapping("/tea/{name}")
     @ErrorAlert(title="Tea Errors", message="Tea Service is experiencing high error rates", severity=Severity.CRITICAL)
+    @DashboardPanel(id="latency", type=LATENCY_GRAPH)
+    @DashboardPanel(id="heatmap", type=LATENCY_HEATMAP)
     @Operation(summary = "Tells you how to make a cup of tea")
     public TeaResponse make(@PathVariable String name, @RequestParam("size") String size) {
         log.info("Making a {} {}...", size, name);

@@ -37,7 +37,7 @@ public class AlertActuatorService {
 
 	public List<Alert> getAlerts(Folder folder) {
 		try {
-			Map<String,List<AlertDto>> map = rest.exchange(RequestEntity.get(URI.create(props.getUrl())).build(),
+			Map<String,List<AlertDto>> map = rest.exchange(RequestEntity.get(URI.create(props.getUrl() + "alert")).build(),
 			new ParameterizedTypeReference<Map<String,List<AlertDto>>>() {
 			}).getBody();
 			List<AlertDto> list = map.get("error");

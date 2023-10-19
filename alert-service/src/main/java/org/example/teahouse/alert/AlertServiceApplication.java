@@ -46,3 +46,26 @@ class AlertScraperService {
     }
 
 }
+
+@Component
+class DashboardScraperService {
+
+    private final GrafanaService grafana;
+
+    private final DashboardActuatorService actuators;
+
+    public DashboardScraperService(RestTemplateBuilder builder, GrafanaService grafana,
+            DashboardActuatorService actuators) {
+        this.grafana = grafana;
+        this.actuators = actuators;
+    }
+
+    @PostConstruct
+    public void scrape() {
+        Dashboard dashboard = actuators.getDashboard();
+        if (dashboard != null) {
+            grafana.updateDashboard(dashboard);
+        }
+    }
+
+}
