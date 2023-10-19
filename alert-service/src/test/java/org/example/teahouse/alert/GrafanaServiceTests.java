@@ -1,26 +1,22 @@
 package org.example.teahouse.alert;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
 public class GrafanaServiceTests {
 	
 	@Test
-	public void testAlert() throws Exception {
-		Folder folder = new Folder(1, UUID.randomUUID().toString(), "Another Tea Error Rate");
-		Alert alert = Alert.forFolder(folder).title("My Alert").uri("/foo").build();
-		assertThat(alert.getDetails().get("id")).isNotNull();
-		assertThat(alert.getFolderUID()).isEqualTo(folder.uid());
-		assertThat(alert.getTitle()).isEqualTo("My Alert");
-		String tree = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(alert);
-		assertThat(tree).doesNotContain("\"details\" :");
-		assertThat(tree).doesNotContain("${folderUid}");
-		assertThat(tree).doesNotContain("${application}");
-		assertThat(tree).doesNotContain("${uri}");
+	public void testUpsert() throws Exception {
+		GrafanaProperties props = new GrafanaProperties();
+		props.setUrl("http://localhost:3000");
+		GrafanaService service = new GrafanaService(new RestTemplateBuilder(), props);
+		Dashboard dash = Dashboard.example();
+		dash.getPanels().add(Panel.graph());
+		dash.getPanels().add(Panel.graph());
+		dash.getPanels().add(Panel.heatmap());
+		dash.arrange("0,1/2");
+		dash.normalize();
+		service.deleteDashboard(dash.getUid());
+		service.updateDashboard(dash);
 	}
 }
